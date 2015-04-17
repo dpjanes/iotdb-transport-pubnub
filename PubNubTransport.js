@@ -59,6 +59,8 @@ var PubNubTransport = function (initd) {
     });
 };
 
+PubNubTransport.prototype = new iotdb.transporter.Transport;
+
 /**
  *  List all the IDs associated with this Transport.
  *
@@ -77,8 +79,23 @@ PubNubTransport.prototype.list = function(paramd, callback) {
         callback = arguments[0];
     }
 
-    // callback([ id ])
+    // callback(id)
     // callback(null);
+};
+
+/**
+ *  Trigger the callback whenever a new thing is added.
+ *  NOT FINISHED
+ */
+PubNubTransport.prototype.added = function(paramd, callback) {
+    var self = this;
+
+    if (arguments.length === 1) {
+        paramd = {};
+        callback = arguments[0];
+    }
+
+    var channel = self._channel();
 };
 
 /**
@@ -153,7 +170,7 @@ PubNubTransport.prototype.updated = function(id, band, callback) {
 
 /**
  */
-PubNubTransport.prototype.remove = function(id, band) {
+PubNubTransport.prototype.remove = function(id) {
     var self = this;
 
     if (!id) {
