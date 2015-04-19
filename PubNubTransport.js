@@ -38,14 +38,24 @@ var logger = bunyan.createLogger({
     module: 'PubNubTransport',
 });
 
+/* --- constructor --- */
+
 /**
- *  Create a transport for PubNub.
+ *  See {iotdb.transporter.Transport#Transport} for documentation.
  */
 var PubNubTransport = function (initd) {
     var self = this;
 
     self.initd = _.defaults(
         initd,
+        {
+            channel: iotdb.transporter.channel,
+            unchannel: iotdb.transporter.unchannel,
+            encode: _encode,
+            decode: _decode,
+            pack: _pack,
+            unpack: _unpack,
+        },
         iotdb.keystore().get("/transports/PubNubTransport/initd"),
         {
             prefix: ""
@@ -61,15 +71,12 @@ var PubNubTransport = function (initd) {
 
 PubNubTransport.prototype = new iotdb.transporter.Transport;
 
+/* --- methods --- */
+
 /**
- *  List all the IDs associated with this Transport.
- *
- *  The callback is called with a list of IDs
- *  and then null when there are no further values.
- *
- *  Note that this may not be memory efficient due
- *  to the way "value" works. This could be revisited
- *  in the future.
+ *  See {iotdb.transporter.Transport#list} for documentation.
+ *  <p>
+ *  PubNub does not support list
  */
 PubNubTransport.prototype.list = function(paramd, callback) {
     var self = this;
@@ -79,13 +86,13 @@ PubNubTransport.prototype.list = function(paramd, callback) {
         callback = arguments[0];
     }
 
-    // callback(id)
-    // callback(null);
+    self._validate_list(paramd, callback);
+
+    callback(null);
 };
 
 /**
- *  Trigger the callback whenever a new thing is added.
- *  NOT FINISHED
+ *  See {iotdb.transporter.Transport#added} for documentation.
  */
 PubNubTransport.prototype.added = function(paramd, callback) {
     var self = this;
@@ -95,22 +102,20 @@ PubNubTransport.prototype.added = function(paramd, callback) {
         callback = arguments[0];
     }
 
-    var channel = self._channel();
+    self._validate_added(paramd, callback);
+
+    var channel = self.initd.channel(self.initd);
 };
 
 /**
+ *  See {iotdb.transporter.Transport#get} for documentation.
  */
-PubNubTransport.prototype.get = function(id, band, callback) {
+PubNubTransport.prototype.get = function(paramd, callback) {
     var self = this;
 
-    if (!id) {
-        throw new Error("id is required");
-    }
-    if (!band) {
-        throw new Error("band is required");
-    }
+    self._validate_get(paramd, callback);
 
-    var channel = self._channel(id, band);
+    var channel = self.initd.channel(self.initd, id, band);
 
     // callback(id, band, null); does not exist
     // OR
@@ -120,18 +125,19 @@ PubNubTransport.prototype.get = function(id, band, callback) {
 };
 
 /**
+ *  See {iotdb.transporter.Transport#update} for documentation.
  */
-PubNubTransport.prototype.update = function(id, band, value) {
+PubNubTransport.prototype.update = function(paramd, callback) {
     var self = this;
 
-    if (!id) {
-        throw new Error("id is required");
-    }
-    if (!band) {
-        throw new Error("band is required");
+    if (arguments.length === 1) {
+        paramd = {};
+        callback = arguments[0];
     }
 
-    var channel = self._channel(id, band);
+    self._validate_update(paramd, callback);
+
+    var channel = self.initd.channel(id, band);
     var d = _pack(value);
 
     self.native.publish({ 
@@ -147,18 +153,14 @@ PubNubTransport.prototype.update = function(id, band, value) {
 };
 
 /**
+ *  See {iotdb.transporter.Transport#updated} for documentation.
  */
-PubNubTransport.prototype.updated = function(id, band, callback) {
+PubNubTransport.prototype.updated = function(paramd, callback) {
     var self = this;
 
-    if (!id) {
-        throw new Error("id is required");
-    }
-    if (!band) {
-        throw new Error("band is required");
-    }
+    self._validate_updated(paramd, callback);
 
-    var channel = self._channel(id, band);
+    var channel = self.initd.channel(id, band);
 
     self.native.subscribe({
         channel: channel,
@@ -169,40 +171,15 @@ PubNubTransport.prototype.updated = function(id, band, callback) {
 };
 
 /**
+ *  See {iotdb.transporter.Transport#remove} for documentation.
  */
-PubNubTransport.prototype.remove = function(id) {
+PubNubTransport.prototype.remove = function(paramd, callback) {
     var self = this;
 
-    if (!id) {
-        throw new Error("id is required");
-    }
-    if (!band) {
-        throw new Error("band is required");
-    }
-
-    var channel = self._channel(id, band);
+    self._validate_remove(paramd, callback);
 };
 
 /* -- internals -- */
-PubNubTransport.prototype._channel = function(id, band, paramd) {
-    var self = this;
-
-    paramd = _.defaults(paramd, {
-        mkdirs: false,
-    });
-
-    var channel = self.initd.prefix;
-    if (id) {
-        channel = path.join(channel, _encode(id));
-
-        if (band) {
-            channel = path.join(channel, _encode(band));
-        }
-    }
-
-    return channel;
-};
-
 var _encode = function(s) {
     return s.replace(/[\/$%#.\]\[]/g, function(c) {
         return '%' + c.charCodeAt(0).toString(16);
