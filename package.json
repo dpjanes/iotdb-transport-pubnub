@@ -24,8 +24,8 @@
     "main": "index.js", 
     "name": "iotdb-transport-pubnub", 
     "peerDependencies": {
-        "iotdb": ">=0.5.12", 
-        "pubnub": "~3.7.10"
+        "iotdb": ">=0.6.9", 
+        "pubnub": "~3.7.11"
     }, 
     "private": false, 
     "repository": {
@@ -35,5 +35,5 @@
     "scripts": {
         "test": "grunt"
     }, 
-    "version": "0.0.1"
+    "version": "0.0.2"
 }
