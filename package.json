@@ -24,6 +24,7 @@
     "main": "index.js", 
     "name": "iotdb-transport-pubnub", 
     "peerDependencies": {
+        "iotdb-transport": "",
         "iotdb": "~0.8.1", 
         "pubnub": "~3.7.13"
     }, 

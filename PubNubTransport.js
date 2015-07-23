@@ -24,6 +24,7 @@
 "use strict";
 
 var iotdb = require('iotdb');
+var iotdb_transport = require('iotdb-transport');
 var _ = iotdb._;
 var bunyan = iotdb.bunyan;
 
@@ -41,7 +42,7 @@ var logger = bunyan.createLogger({
 /* --- constructor --- */
 
 /**
- *  See {iotdb.transporter.Transport#Transport} for documentation.
+ *  See {iotdb_transport.Transport#Transport} for documentation.
  */
 var PubNubTransport = function (initd) {
     var self = this;
@@ -49,8 +50,8 @@ var PubNubTransport = function (initd) {
     self.initd = _.defaults(
         initd,
         {
-            channel: iotdb.transporter.channel,
-            unchannel: iotdb.transporter.unchannel,
+            channel: iotdb_transport.channel,
+            unchannel: iotdb_transport.unchannel,
             encode: _encode,
             decode: _decode,
             pack: _pack,
@@ -69,12 +70,13 @@ var PubNubTransport = function (initd) {
     });
 };
 
-PubNubTransport.prototype = new iotdb.transporter.Transport;
+PubNubTransport.prototype = new iotdb_transport.Transport;
+PubNubTransport.prototype._class = "PubNubTransport";
 
 /* --- methods --- */
 
 /**
- *  See {iotdb.transporter.Transport#list} for documentation.
+ *  See {iotdb_transport.Transport#list} for documentation.
  *  <p>
  *  PubNub does not support list
  */
@@ -95,7 +97,7 @@ PubNubTransport.prototype.list = function(paramd, callback) {
 };
 
 /**
- *  See {iotdb.transporter.Transport#added} for documentation.
+ *  See {iotdb_transport.Transport#added} for documentation.
  */
 PubNubTransport.prototype.added = function(paramd, callback) {
     var self = this;
@@ -111,7 +113,7 @@ PubNubTransport.prototype.added = function(paramd, callback) {
 };
 
 /**
- *  See {iotdb.transporter.Transport#get} for documentation.
+ *  See {iotdb_transport.Transport#get} for documentation.
  */
 PubNubTransport.prototype.get = function(paramd, callback) {
     var self = this;
@@ -128,7 +130,7 @@ PubNubTransport.prototype.get = function(paramd, callback) {
 };
 
 /**
- *  See {iotdb.transporter.Transport#update} for documentation.
+ *  See {iotdb_transport.Transport#update} for documentation.
  */
 PubNubTransport.prototype.update = function(paramd, callback) {
     var self = this;
@@ -156,7 +158,7 @@ PubNubTransport.prototype.update = function(paramd, callback) {
 };
 
 /**
- *  See {iotdb.transporter.Transport#updated} for documentation.
+ *  See {iotdb_transport.Transport#updated} for documentation.
  */
 PubNubTransport.prototype.updated = function(paramd, callback) {
     var self = this;
@@ -174,7 +176,7 @@ PubNubTransport.prototype.updated = function(paramd, callback) {
 };
 
 /**
- *  See {iotdb.transporter.Transport#remove} for documentation.
+ *  See {iotdb_transport.Transport#remove} for documentation.
  */
 PubNubTransport.prototype.remove = function(paramd, callback) {
     var self = this;
