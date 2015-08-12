@@ -26,7 +26,6 @@
 var iotdb = require('iotdb');
 var iotdb_transport = require('iotdb-transport');
 var _ = iotdb._;
-var bunyan = iotdb.bunyan;
 
 var path = require('path');
 var pubnub = require('pubnub');
@@ -34,7 +33,7 @@ var pubnub = require('pubnub');
 var util = require('util');
 var url = require('url');
 
-var logger = bunyan.createLogger({
+var logger = iotdb.logger({
     name: 'iotdb-transport-proto',
     module: 'PubNubTransport',
 });
