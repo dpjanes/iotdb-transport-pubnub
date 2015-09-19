@@ -5,6 +5,8 @@
     }, 
     "dependencies": {
         "iotdb": ">=0.10.0", 
+        "iotdb-transport": "~0.0.14", 
+        "pubnub": "~3.7.14", 
         "validate": "~2.1.6"
     }, 
     "description": "HomeStar / IOTDB Bridge for Filesystems", 
@@ -24,10 +26,6 @@
     "license": "Apache-2.0", 
     "main": "index.js", 
     "name": "iotdb-transport-pubnub", 
-    "peerDependencies": {
-        "iotdb-transport": "~0.0.13", 
-        "pubnub": "~3.7.14"
-    }, 
     "private": false, 
     "repository": {
         "type": "git", 
@@ -36,5 +34,5 @@
     "scripts": {
         "test": "grunt"
     }, 
-    "version": "0.0.10"
+    "version": "0.0.11"
 }
