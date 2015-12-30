@@ -1,7 +1,8 @@
 # iotdb-transport-pubnub
-HomeStar / IOTDB Transport for PubNub
+IOTDB / Home☆Star Transport for PubNub. NOT FINISHED.
 
-See:
-* https://github.com/dpjanes/iotdb-homestar/blob/master/docs/transports.md
+<img src="https://raw.githubusercontent.com/dpjanes/iotdb-homestar/master/docs/HomeStar.png" align="right" />
 
-Really very a work in progress
+This is an **advanced** topic. 
+[Documentation](https://homestar.io/about/transporters).
+
