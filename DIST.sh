@@ -6,6 +6,8 @@
 #   2015-04-01
 #
 
+exit
+
 PACKAGE=iotdb-transport-pubnub
 DIST_ROOT=/var/tmp/.dist.$$
 
