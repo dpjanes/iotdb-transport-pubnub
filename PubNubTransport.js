@@ -131,7 +131,7 @@ PubNubTransport.prototype.get = function(paramd, callback) {
 /**
  *  See {iotdb_transport.Transport#update} for documentation.
  */
-PubNubTransport.prototype.update = function(paramd, callback) {
+PubNubTransport.prototype.put = function(paramd, callback) {
     var self = this;
 
     if (arguments.length === 1) {
