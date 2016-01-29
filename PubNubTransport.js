@@ -81,13 +81,12 @@ PubNubTransport.prototype._class = "PubNubTransport";
  */
 PubNubTransport.prototype.list = function(paramd, callback) {
     var self = this;
+    var ld;
 
     self._validate_list(paramd, callback);
 
-    callback({
-        end: true,
-        error: new Error("N/A"),
-    });
+    ld = _.shallowCopy(paramd);
+    callback(new errors.NotImplemented(), ld);
 };
 
 /**
