@@ -152,7 +152,11 @@ PubNubTransport.prototype.updated = function(paramd, callback) {
     self.native.subscribe({
         channel: channel,
         callback: function(messaged) {
-            callback(id, band, _unpack(messaged));
+            callback(null, {
+                id: id, 
+                band: band, 
+                value: _unpack(messaged)
+            });
         }
     });
 };
