@@ -82,11 +82,6 @@ PubNubTransport.prototype._class = "PubNubTransport";
 PubNubTransport.prototype.list = function(paramd, callback) {
     var self = this;
 
-    if (arguments.length === 1) {
-        paramd = {};
-        callback = arguments[0];
-    }
-
     self._validate_list(paramd, callback);
 
     callback({
@@ -100,11 +95,6 @@ PubNubTransport.prototype.list = function(paramd, callback) {
  */
 PubNubTransport.prototype.added = function(paramd, callback) {
     var self = this;
-
-    if (arguments.length === 1) {
-        paramd = {};
-        callback = arguments[0];
-    }
 
     self._validate_added(paramd, callback);
 
@@ -133,11 +123,6 @@ PubNubTransport.prototype.get = function(paramd, callback) {
  */
 PubNubTransport.prototype.put = function(paramd, callback) {
     var self = this;
-
-    if (arguments.length === 1) {
-        paramd = {};
-        callback = arguments[0];
-    }
 
     self._validate_update(paramd, callback);
 
