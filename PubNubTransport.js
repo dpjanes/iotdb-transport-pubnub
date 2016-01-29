@@ -125,15 +125,16 @@ PubNubTransport.prototype.put = function(paramd, callback) {
 
     var channel = self.initd.channel(id, band);
     var d = _pack(value);
+    var pd = _.shallowCopy(paramd);
 
     self.native.publish({ 
         channel: channel,
         message: d,
         callback: function(e) {
-            console.log( "SUCCESS!", e, d );
+            callback(null, pd);
         },
         error: function(e) {
-            console.log( "FAILED! RETRY PUBLISH!", e );
+            callback(e, pd);
         }
     });
 };
