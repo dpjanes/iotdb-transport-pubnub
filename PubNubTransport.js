@@ -85,7 +85,7 @@ PubNubTransport.prototype.list = function(paramd, callback) {
 
     self._validate_list(paramd, callback);
 
-    ld = _.shallowCopy(paramd);
+    ld = _.d.clone.shallow(paramd);
     callback(new errors.NotImplemented(), ld);
 };
 
@@ -108,7 +108,7 @@ PubNubTransport.prototype.get = function(paramd, callback) {
 
     self._validate_get(paramd, callback);
 
-    var gd = _.shallowCopy(paramd);
+    var gd = _.d.clone.shallow(paramd);
     gd.value = null;
 
     callback(new errors.NotImplemented(), gd);
@@ -124,7 +124,7 @@ PubNubTransport.prototype.put = function(paramd, callback) {
 
     var channel = self.initd.channel(id, band);
     var d = _pack(value);
-    var pd = _.shallowCopy(paramd);
+    var pd = _.d.clone.shallow(paramd);
 
     self.native.publish({ 
         channel: channel,
@@ -168,7 +168,7 @@ PubNubTransport.prototype.bands = function (paramd, callback) {
 
     self._validate_bands(paramd, callback);
 
-    var bd = _.shallowCopy(paramd);
+    var bd = _.d.clone.shallow(paramd);
 
     callback(new errors.NotImplemented(), bd); // RD
 };
@@ -181,7 +181,7 @@ PubNubTransport.prototype.remove = function(paramd, callback) {
 
     self._validate_remove(paramd, callback);
 
-    var rd = _.shallowCopy(paramd);
+    var rd = _.d.clone.shallow(paramd);
     delete rd.band;
     delete rd.value;
 
