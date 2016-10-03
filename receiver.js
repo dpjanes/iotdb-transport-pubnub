@@ -33,6 +33,8 @@ const errors = require('iotdb-errors');
 const assert = require("assert");
 const pubnub = require("pubnub");
 
+const Rx = require('rx');
+
 const logger = iotdb.logger({
     name: 'iotdb-transport-pubnub',
     module: 'receiver',
@@ -52,13 +54,25 @@ const make = (initd) => {
 
     const _client = new pubnub(_initd);
     const _encode = s => s;
+    const _subject = new Rx.Subject();
 
     self.rx.list = (observer, d) => {
         observer.onCompleted();
     };
 
     self.rx.added = (observer, d) => {
-        observer.onCompleted();
+        _subject
+            .filter(ud => ud.__added)
+            .map(ud => {
+                const ad = _.d.compose.shallow(d, ud);
+                delete ad.__added
+                return ad;
+            })
+            .subscribe(
+                d => observer.onNext(d),
+                error => observer.onError(error),
+                () => observer.onCompleted()
+            );
     };
 
     self.rx.put = (observer, d) => {
@@ -74,12 +88,37 @@ const make = (initd) => {
     };
 
     self.rx.updated = (observer, d) => {
+        _subject
+            .filter(ud => !ud.__added)
+            .filter(ud => !d.id || d.id === ud.id)
+            .filter(ud => !d.band || d.id === ud.band)
+            .map(ud => _.d.compose.shallow(d, ud))
+            .subscribe(
+                d => observer.onNext(d),
+                error => observer.onError(error),
+                () => observer.onCompleted()
+            );
     };
 
     const _listen = () => {
         _client.addListener({
             message: message => {
-                console.log("+", "message", message);
+                const parts = message.channel.split(".");
+                if (parts.length != 3) {
+                    return;
+                }
+                if (!message.message) {
+                    return;
+                }
+
+                const d = {
+                    id: parts[1],
+                    band: parts[2],
+                    value: message.message
+                };
+
+                console.log("+", "message", d);
+                _subject.onNext(d);
             },
         })
 
