@@ -40,7 +40,7 @@ const iotdb_transport = require("iotdb-transport-iotdb");
 const iotdb_transporter = iotdb_transport.make({});
 
 // our destination
-const pubnub_transport = require("../transporter")
+const pubnub_transport = require("../sender")
 const pubnub_transporter = pubnub_transport.make(require("./pubnub.json"));
 
 // connect

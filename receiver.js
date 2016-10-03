@@ -74,27 +74,22 @@ const make = (initd) => {
     };
 
     self.rx.updated = (observer, d) => {
-        observer.onCompleted();
     };
 
     const _listen = () => {
-        client.addListener({
+        _client.addListener({
             message: message => {
                 console.log("+", "message", message);
             },
         })
 
         console.log("+", "subscribing");
-        client.subscribe({
+        _client.subscribe({
             channels: [ "iot.*" ],
         });
     }
 
-    listen(event => {
-        if (event.category === "PNConnectedCategory") {
-            publish();
-        }
-    })
+    _listen();
 
     return self;
 };

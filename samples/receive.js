@@ -3,32 +3,16 @@
  *
  *  David Janes
  *  IOTDB.org
- *  2015-03-07
+ *  2016-10-03
  *
- *  Demonstrate receiving
- *  Make sure to see README first
+ *  Demonstrate receive
  */
 
-var Transport = require('../PubNubTransport').PubNubTransport;
+const transport = require("../receiver");
+const _ = require("iotdb")._;
 
-var p = new Transport({
-});
-p.updated("MyThingID", "meta", function(error, ud) {
-    if (error) {
-        console.log("#", error);
-        return;
-    }
+const testers = require("iotdb-transport").testers;
 
-    BROKEN
-    if (value === undefined) {
-        p.get(id, band, function(_id, _band, value) {
-            if (error) {
-                console.log("#", error);
-                return;
-            }
-            console.log("+", id, band, value);
-        });
-    } else {
-        console.log("+", id, band, value);
-    }
-});
+const receiver_transporter = transport.make(_.d.compose.shallow(require("./pubnub.json"), { bands: null }));
+
+testers.updated(receiver_transporter);

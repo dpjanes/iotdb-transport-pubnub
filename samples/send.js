@@ -3,26 +3,17 @@
  *
  *  David Janes
  *  IOTDB.org
- *  2015-03-07
+ *  2016-10-03
  *
  *  Demonstrate sending something
- *  Make sure to see README first
  */
 
-var Transport = require('../PubNubTransport').PubNubTransport;
+const transport = require("../sender");
+const _ = require("iotdb")._;
 
-var p = new Transport({
-});
+const testers = require("iotdb-transport").testers;
 
-var _update = function() {
-    var now = (new Date()).toISOString();
-    console.log("+ sent update", now);
-    p.update("MyThingID", "meta", {
-        first: "David",
-        last: "Janes",
-        now: now,
-    });
-};
+const sender_transporter = transport.make(_.d.compose.shallow(require("./pubnub.json"), { bands: null }));
 
-setInterval(_update, 10 * 1000);
-_update();
+testers.put(sender_transporter);
+setInterval(() => testers.put(sender_transporter), 2500);

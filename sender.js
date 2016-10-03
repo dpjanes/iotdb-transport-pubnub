@@ -66,18 +66,19 @@ const make = (initd) => {
             return observer.onCompleted();
         }
 
-        const pd = {
+        const packet = {
             channel: `iot.${ _encode(d.id) }.${ _encode(d.band) }`,
             message: d.value,
         }
 
         console.log("+", "publishing")
-        _client.publish(pd, function(status, response) {
+        _client.publish(packet, function(status, response) {
+            console.log(status);
             if (status.error) {
-                return observer.onCompleted(new Error("unknown error"));
+                return observer.onError(new Error("unknown error"));
             }
 
-            observer.onNext(pd);
+            observer.onNext(d);
             observer.onCompleted();
         })
     };
