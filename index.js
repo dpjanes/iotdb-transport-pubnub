@@ -22,7 +22,9 @@
 
 "use strict";
 
-const transporter = require('./transporter');
-exports.make = transporter.make;
+const sender = require('./send');
+exports.sender = transporter.make;
 
+const receiver = require('./receiver');
+exports.receiver = transporter.make;
 

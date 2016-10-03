@@ -34,6 +34,8 @@ echo "=================="
     tar cf - \
         --exclude "node_modules" \
         --exclude "Gruntfile.js" \
+        --exclude "xxx*" \
+        --exclude "yyy*" \
         README.md LICENSE \
         homestar.json package.json \
         *.js \

@@ -1,11 +1,11 @@
 /*
- *  transporter.js
+ *  sender.js
  *
  *  David Janes
  *  IOTDB.org
- *  2016-08-10
+ *  2016-10-03
  *
- *  A Redis Transporter
+ *  PubNub transporter for _sending_ data
  *
  *  Copyright [2013-2016] [David P. Janes]
  *
@@ -35,12 +35,12 @@ const pubnub = require("pubnub");
 
 const logger = iotdb.logger({
     name: 'iotdb-transport-pubnub',
-    module: 'transporter',
+    module: 'sender',
 });
 
 const make = (initd) => {
     const self = iotdb_transport.make();
-    self.name = "iotdb-transport-pubnub";
+    self.name = "iotdb-transport-pubnub/sender";
 
     const _initd = _.d.compose.shallow(initd, {
         bands: [ "istate" ],
@@ -49,7 +49,6 @@ const make = (initd) => {
     });
 
     assert.ok(_initd.publishKey, "initd.publishKey is required");
-    assert.ok(_initd.subscribeKey, "initd.subscribeKey is required");
 
     const _client = new pubnub(_initd);
     const _encode = s => s;
@@ -94,25 +93,6 @@ const make = (initd) => {
     self.rx.updated = (observer, d) => {
         observer.onCompleted();
     };
-
-    const _listen = () => {
-        client.addListener({
-            message: message => {
-                console.log("+", "message", message);
-            },
-        })
-
-        console.log("+", "subscribing");
-        client.subscribe({
-            channels: [ "iot.*" ],
-        });
-    }
-
-    listen(event => {
-        if (event.category === "PNConnectedCategory") {
-            publish();
-        }
-    })
 
     return self;
 };
