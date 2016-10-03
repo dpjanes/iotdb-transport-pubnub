@@ -1,5 +1,5 @@
 /*
- *  receive.js
+ *  receiver.js
  *
  *  David Janes
  *  IOTDB.org

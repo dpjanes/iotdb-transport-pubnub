@@ -1,5 +1,5 @@
 /*
- *  send.js
+ *  sender.js
  *
  *  David Janes
  *  IOTDB.org
